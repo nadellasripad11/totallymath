@@ -121,6 +121,31 @@ html, body {
 .tag-new { background: #16a34a; }
 .tag-hot { background: #ef4444; }
 .tag-school { background: #7c3aed; right: 8px; left: auto; }
+.tag-original { background: linear-gradient(90deg, #f59e0b, #ec4899); }
+
+/* favorite heart button */
+.fav-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 1;
+  color: #fff;
+  background: rgba(8,8,15,0.55);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.12s, background 0.15s, color 0.15s;
+  backdrop-filter: blur(4px);
+  padding: 0;
+}
+.fav-btn:hover { transform: scale(1.12); background: rgba(8,8,15,0.75); }
+.fav-btn.active { color: #f43f5e; border-color: #f43f5e; }
 
 /* keyboard key caps */
 .kbd {

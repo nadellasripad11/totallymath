@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Neon Dodge — TotallyMath Original</title>
+<style>
+  :root { --bg:#08080f; --accent:#7c3aed; --accent-light:#a855f7; --text:#e2e8f0; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body {
+    height:100%; background:var(--bg); color:var(--text);
+    font-family:"Inter", system-ui, -apple-system, sans-serif;
+    overflow:hidden; user-select:none; -webkit-user-select:none;
+  }
+  #wrap { position:relative; width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+  canvas { display:block; background:radial-gradient(circle at 50% 0%, #16032e 0%, #08080f 65%); }
+  .overlay {
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center; gap:14px; padding:20px;
+    background:rgba(8,8,15,0.82); backdrop-filter:blur(4px);
+  }
+  .overlay.hidden { display:none; }
+  h1 {
+    font-size:clamp(34px,8vw,60px); font-weight:900; letter-spacing:-0.03em;
+    background:linear-gradient(120deg,#f0abfc,#a855f7,#22d3ee);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .sub { font-size:15px; color:#94a3b8; max-width:340px; line-height:1.55; }
+  .keys { font-size:13px; color:#94a3b8; margin-top:4px; }
+  kbd {
+    display:inline-flex; align-items:center; justify-content:center; min-width:26px; height:26px;
+    padding:0 7px; margin:0 2px; font-size:12px; font-weight:700; color:var(--text);
+    background:linear-gradient(180deg,#2a2a4a,#1a1a35);
+    border:1px solid rgba(124,58,237,0.35); border-bottom-width:3px; border-radius:6px;
+  }
+  button {
+    margin-top:8px; padding:12px 28px; font-size:16px; font-weight:700; color:#fff;
+    background:var(--accent); border:none; border-radius:10px; cursor:pointer;
+    transition:transform 0.1s, background 0.15s;
+  }
+  button:hover { background:var(--accent-light); }
+  button:active { transform:scale(0.96); }
+  .final { font-size:20px; font-weight:700; color:var(--text); }
+  .badge {
+    font-size:11px; font-weight:800; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--accent-light); border:1px solid rgba(124,58,237,0.4); padding:4px 12px; border-radius:999px;
+  }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="c"></canvas>
+
+  <div id="startScreen" class="overlay">
+    <span class="badge">TotallyMath Original</span>
+    <h1>Neon Dodge</h1>
+    <p class="sub">Weave through the neon walls. They come faster and faster. Survive as long as you can — every second is a point.</p>
+    <p class="keys"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> or <kbd>A</kbd> <kbd>D</kbd> to dodge</p>
+    <button id="startBtn">Start</button>
+  </div>
+
+  <div id="overScreen" class="overlay hidden">
+    <h1>Crashed!</h1>
+    <p class="final" id="finalScore">Score: 0</p>
+    <p class="sub" id="bestLine">Best: 0</p>
+    <button id="retryBtn">Play Again</button>
+  </div>
+</div>
+
+<script>
+(() => {
+  const canvas = document.getElementById("c");
+  const ctx = canvas.getContext("2d");
+  const startScreen = document.getElementById("startScreen");
+  const overScreen = document.getElementById("overScreen");
+  const startBtn = document.getElementById("startBtn");
+  const retryBtn = document.getElementById("retryBtn");
+  const finalScore = document.getElementById("finalScore");
+  const bestLine = document.getElementById("bestLine");
+
+  let W = 0, H = 0, dpr = 1;
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    canvas.style.width = W + "px"; canvas.style.height = H + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  window.addEventListener("resize", resize);
+  resize();
+
+  const BEST_KEY = "neondodge-best";
+  let best = 0;
+  try { best = parseInt(localStorage.getItem(BEST_KEY) || "0", 10) || 0; } catch (e) {}
+
+  const HUES = [280, 190, 330, 150, 40];
+  const state = {
+    running: false,
+    score: 0,
+    dist: 0,
+    speed: 260,
+    player: { x: 0, y: 0, r: 16 },
+    walls: [],
+    spawnGap: 0,
+    keys: {},
+    pointerX: null,
+    shake: 0,
+  };
+
+  function reset() {
+    state.score = 0;
+    state.dist = 0;
+    state.speed = 260;
+    state.player.x = W / 2;
+    state.player.y = H - 90;
+    state.walls = [];
+    state.spawnGap = 0;
+    state.pointerX = null;
+    state.shake = 0;
+  }
+
+  function start() {
+    reset();
+    state.running = true;
+    startScreen.classList.add("hidden");
+    overScreen.classList.add("hidden");
+  }
+
+  function gameOver() {
+    state.running = false;
+    if (state.score > best) {
+      best = state.score;
+      try { localStorage.setItem(BEST_KEY, String(best)); } catch (e) {}
+    }
+    finalScore.textContent = "Score: " + state.score;
+    bestLine.textContent = "Best: " + best;
+    overScreen.classList.remove("hidden");
+  }
+
+  startBtn.addEventListener("click", start);
+  retryBtn.addEventListener("click", start);
+
+  addEventListener("keydown", (e) => {
+    state.keys[e.key.toLowerCase()] = true;
+    if (["arrowleft", "arrowright"].includes(e.key.toLowerCase())) e.preventDefault();
+  });
+  addEventListener("keyup", (e) => { state.keys[e.key.toLowerCase()] = false; });
+  canvas.addEventListener("mousemove", (e) => { state.pointerX = e.clientX; });
+  canvas.addEventListener("touchmove", (e) => { if (e.touches[0]) state.pointerX = e.touches[0].clientX; }, { passive: true });
+
+  function spawnWall() {
+    const gapW = Math.max(110, 190 - state.dist * 0.01);
+    const gapX = Math.random() * (W - gapW - 40) + 20;
+    const hue = HUES[(Math.random() * HUES.length) | 0];
+    state.walls.push({ y: -30, gapX, gapW, hue, scored: false });
+  }
+
+  function update(dt) {
+    const p = state.player;
+    const move = 460 * dt;
+    if (state.keys["arrowleft"] || state.keys["a"]) p.x -= move;
+    if (state.keys["arrowright"] || state.keys["d"]) p.x += move;
+    if (state.pointerX !== null) p.x += (state.pointerX - p.x) * Math.min(1, dt * 14);
+    p.x = Math.max(p.r, Math.min(W - p.r, p.x));
+
+    state.dist += state.speed * dt;
+    state.speed += 7 * dt; // ramps up
+
+    state.spawnGap -= state.speed * dt;
+    if (state.spawnGap <= 0) {
+      spawnWall();
+      state.spawnGap = 190 + Math.random() * 60;
+    }
+
+    const wallH = 22;
+    for (const w of state.walls) {
+      w.y += state.speed * dt;
+      if (!w.scored && w.y > p.y) {
+        w.scored = true;
+        state.score += 1;
+      }
+      // collision: player overlaps wall band but not inside the gap
+      if (p.y + p.r > w.y && p.y - p.r < w.y + wallH) {
+        const insideGap = p.x - p.r > w.gapX && p.x + p.r < w.gapX + w.gapW;
+        if (!insideGap) { state.shake = 1; gameOver(); return; }
+      }
+    }
+    state.walls = state.walls.filter((w) => w.y < H + 40);
+    if (state.shake > 0) state.shake = Math.max(0, state.shake - dt * 4);
+  }
+
+  function draw() {
+    ctx.save();
+    if (state.shake > 0) {
+      ctx.translate((Math.random() - 0.5) * 10 * state.shake, (Math.random() - 0.5) * 10 * state.shake);
+    }
+    ctx.clearRect(-20, -20, W + 40, H + 40);
+
+    if (state.running || state.walls.length) {
+      const wallH = 22;
+      for (const w of state.walls) {
+        ctx.fillStyle = `hsl(${w.hue} 90% 60%)`;
+        ctx.shadowColor = `hsl(${w.hue} 90% 60%)`;
+        ctx.shadowBlur = 16;
+        // left segment
+        roundRect(ctx, 0, w.y, w.gapX, wallH, 6); ctx.fill();
+        // right segment
+        roundRect(ctx, w.gapX + w.gapW, w.y, W - (w.gapX + w.gapW), wallH, 6); ctx.fill();
+      }
+      ctx.shadowBlur = 0;
+
+      // player
+      const p = state.player;
+      ctx.fillStyle = "#a855f7";
+      ctx.shadowColor = "#a855f7";
+      ctx.shadowBlur = 22;
+      roundRect(ctx, p.x - p.r, p.y - p.r, p.r * 2, p.r * 2, 6);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = "rgba(255,255,255,0.9)";
+      roundRect(ctx, p.x - p.r * 0.4, p.y - p.r * 0.4, p.r * 0.8, p.r * 0.8, 3);
+      ctx.fill();
+    }
+
+    // score
+    ctx.fillStyle = "#e2e8f0";
+    ctx.font = "900 30px Inter, sans-serif";
+    ctx.textAlign = "center";
+    if (state.running) ctx.fillText(String(state.score), W / 2, 54);
+
+    ctx.restore();
+  }
+
+  function roundRect(ctx, x, y, w, h, r) {
+    if (w <= 0) return;
+    r = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  let last = performance.now();
+  function loop(now) {
+    const dt = Math.min(0.05, (now - last) / 1000);
+    last = now;
+    if (state.running) update(dt);
+    draw();
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

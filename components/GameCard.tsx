@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Game } from "@/lib/games";
 import GameThumb from "./GameThumb";
+import FavoriteButton from "./FavoriteButton";
 
 export default function GameCard({ game }: { game: Game }) {
   const primaryCategory = game.categories.find((c) => c !== "new" && c !== "popular") ?? game.categories[0];
@@ -9,11 +10,15 @@ export default function GameCard({ game }: { game: Game }) {
     <Link href={`/game/${game.slug}`} className="game-card">
       <div className="thumb-wrap">
         <GameThumb game={game} />
-        {game.categories.includes("new") && <span className="tag tag-new">NEW</span>}
-        {game.categories.includes("popular") && !game.categories.includes("new") && (
-          <span className="tag tag-hot">HOT</span>
+        {game.original ? (
+          <span className="tag tag-original">★ ORIGINAL</span>
+        ) : game.categories.includes("new") ? (
+          <span className="tag tag-new">NEW</span>
+        ) : (
+          game.categories.includes("popular") && <span className="tag tag-hot">HOT</span>
         )}
         {game.selfHosted && <span className="tag tag-school">✓ SCHOOL</span>}
+        <FavoriteButton slug={game.slug} />
       </div>
       <div className="info">
         <span className="cat-badge">{primaryCategory}</span>

@@ -9,6 +9,8 @@ export interface Game {
   featured?: boolean;
   /** true = game files hosted on our own domain, so it bypasses school filters */
   selfHosted?: boolean;
+  /** true = built from scratch for TotallyMath (original code) */
+  original?: boolean;
   /** attribution for the open-source game we self-host */
   credit?: { author: string; source: string; license: string };
 }
@@ -48,6 +50,7 @@ export const CATEGORIES: { id: Category | "all"; label: string }[] = [
 interface Opts {
   featured?: boolean;
   selfHosted?: boolean;
+  original?: boolean;
   credit?: { author: string; source: string; license: string };
 }
 
@@ -66,9 +69,18 @@ function g(
 
 export const GAMES: Game[] = [
   // ═══════════════════════════════════════════════════════════
+  // ORIGINAL — built from scratch for TotallyMath. Our own code.
+  // ═══════════════════════════════════════════════════════════
+  g("math-rush", "Math Rush", "An original TotallyMath brain-arcade game. Catch the falling answer that solves the equation — it speeds up the longer you last.", ["new", "popular", "arcade", "puzzle"], "/games/math-rush/index.html", "➕", ["#7c3aed", "#22d3ee"], { featured: true, selfHosted: true, original: true }),
+  g("neon-dodge", "Neon Dodge", "An original TotallyMath reflex runner. Weave through endless neon walls that come faster and faster — every second is a point.", ["new", "popular", "arcade", "action"], "/games/neon-dodge/index.html", "⚡", ["#a855f7", "#ec4899"], { featured: true, selfHosted: true, original: true }),
+
+  // ═══════════════════════════════════════════════════════════
   // SELF-HOSTED — files live on OUR domain, so these bypass
   // school filters. The iframe never touches another website.
   // ═══════════════════════════════════════════════════════════
+  g("pacman", "Pac-Man", "The arcade legend. Munch every dot and dodge the four ghosts through the maze.", ["new", "popular", "arcade"], "/games/pacman/index.html", "🟡", ["#facc15", "#1e40af"], { featured: true, selfHosted: true, credit: { author: "Dale Harvey", source: "https://github.com/daleharvey/pacman", license: "MIT" } }),
+  g("flappy-bird", "Flappy Bird", "The infuriating classic. Flap between the pipes without crashing — how far can you get?", ["new", "popular", "arcade"], "/games/flappy-bird/index.html", "🐦", ["#38bdf8", "#22c55e"], { selfHosted: true, credit: { author: "CodeExplained", source: "https://github.com/CodeExplainedRepo/Original-Flappy-bird-JavaScript", license: "MIT" } }),
+  g("memory-match", "Memory Match", "Flip cards and find every matching pair. Train your brain and beat your best time.", ["new", "puzzle", "arcade"], "/games/memory-match/index.html", "🧠", ["#ec4899", "#8b5cf6"], { selfHosted: true, credit: { author: "vishalqalandari903", source: "https://github.com/vishalqalandari903/MemoryCardGame_Javascript", license: "MIT" } }),
   g("hextris", "Hextris", "Addictive hexagonal puzzle inspired by Tetris. Rotate the hexagon to catch falling blocks and clear layers.", ["new", "popular", "puzzle", "arcade"], "/games/hextris/index.html", "⬡", ["#10b981", "#0891b2"], { featured: true, selfHosted: true, credit: { author: "Garrett Finucane & contributors", source: "https://github.com/Hextris/hextris", license: "GPL-3.0" } }),
   g("2048", "2048", "Slide numbered tiles to combine them and reach 2048. The all-time classic number puzzle.", ["new", "popular", "puzzle"], "/games/2048/index.html", "🔢", ["#f59e0b", "#ef4444"], { featured: true, selfHosted: true, credit: { author: "Gabriele Cirulli", source: "https://github.com/gabrielecirulli/2048", license: "MIT" } }),
   g("custom-tetris", "Tetris", "Classic Tetris — stack the falling blocks, clear lines, and chase a high score.", ["new", "popular", "puzzle", "arcade"], "/games/custom-tetris/index.html", "🧱", ["#8b5cf6", "#3b82f6"], { featured: true, selfHosted: true, credit: { author: "Ondřej Žára", source: "https://github.com/ondras/custom-tetris", license: "MIT" } }),
@@ -112,6 +124,23 @@ export interface ControlRow {
 
 // Keyboard / mouse controls per game. "↑ ↓ ← →" are arrow keys.
 export const CONTROLS: Record<string, ControlRow[]> = {
+  "math-rush": [
+    { keys: ["←", "→"], action: "Move the catcher" },
+    { keys: ["A", "D"], action: "Move (alternate)" },
+  ],
+  "neon-dodge": [
+    { keys: ["←", "→"], action: "Dodge left / right" },
+    { keys: ["A", "D"], action: "Dodge (alternate)" },
+  ],
+  pacman: [
+    { keys: ["↑", "↓", "←", "→"], action: "Move Pac-Man" },
+    { keys: ["N"], action: "Start a new game" },
+  ],
+  "flappy-bird": [
+    { keys: ["Space"], action: "Flap" },
+    { keys: ["Click"], action: "Flap (mouse)" },
+  ],
+  "memory-match": [{ keys: ["Mouse"], action: "Click cards to flip them" }],
   hextris: [
     { keys: ["←", "→"], action: "Rotate the hexagon" },
     { keys: ["A", "D"], action: "Rotate (alternate)" },
@@ -220,6 +249,10 @@ export function getFeatured(): Game[] {
 
 export function getSelfHosted(): Game[] {
   return GAMES.filter((game) => game.selfHosted);
+}
+
+export function getOriginals(): Game[] {
+  return GAMES.filter((game) => game.original);
 }
 
 export function getCredits(): Game[] {
