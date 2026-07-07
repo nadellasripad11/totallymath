@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import TabCloak from "./TabCloak";
 
 export default function Navbar() {
   const path = usePathname();
@@ -61,6 +62,7 @@ export default function Navbar() {
           >
             Credits
           </Link>
+          <TabCloak />
         </div>
       </div>
     </nav>
