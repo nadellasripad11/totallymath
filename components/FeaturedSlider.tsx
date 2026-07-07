@@ -6,6 +6,7 @@ import type { Game } from "@/lib/games";
 
 export default function FeaturedSlider({ games }: { games: Game[] }) {
   const [idx, setIdx] = useState(0);
+  const [failed, setFailed] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const t = setInterval(() => setIdx((i) => (i + 1) % games.length), 4000);
@@ -13,6 +14,7 @@ export default function FeaturedSlider({ games }: { games: Game[] }) {
   }, [games.length]);
 
   const game = games[idx];
+  const hasLogo = !failed[game.slug];
 
   return (
     <div
@@ -42,21 +44,41 @@ export default function FeaturedSlider({ games }: { games: Game[] }) {
           background: `linear-gradient(180deg, rgba(8,8,15,0.15) 0%, rgba(8,8,15,0.8) 100%)`,
         }}
       />
-      <span
-        style={{
-          position: "absolute",
-          right: 40,
-          top: "50%",
-          transform: "translateY(-50%)",
-          fontSize: 120,
-          lineHeight: 1,
-          opacity: 0.9,
-          filter: "drop-shadow(0 6px 16px rgba(0,0,0,0.4))",
-          pointerEvents: "none",
-        }}
-      >
-        {game.icon}
-      </span>
+      {hasLogo ? (
+        <img
+          src={`/thumbs/${game.slug}.png`}
+          alt={game.title}
+          onError={() => setFailed((f) => ({ ...f, [game.slug]: true }))}
+          style={{
+            position: "absolute",
+            right: 32,
+            top: "50%",
+            transform: "translateY(-50%)",
+            height: "72%",
+            aspectRatio: "1 / 1",
+            objectFit: "cover",
+            borderRadius: 20,
+            boxShadow: "0 10px 40px rgba(0,0,0,0.45)",
+            pointerEvents: "none",
+          }}
+        />
+      ) : (
+        <span
+          style={{
+            position: "absolute",
+            right: 40,
+            top: "50%",
+            transform: "translateY(-50%)",
+            fontSize: 120,
+            lineHeight: 1,
+            opacity: 0.9,
+            filter: "drop-shadow(0 6px 16px rgba(0,0,0,0.4))",
+            pointerEvents: "none",
+          }}
+        >
+          {game.icon}
+        </span>
+      )}
       {/* animated glow orbs */}
       <div style={{
         position: "absolute",
