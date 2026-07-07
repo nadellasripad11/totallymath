@@ -82,6 +82,9 @@ export const GAMES: Game[] = [
   g("pacman", "Pac-Man", "The arcade legend. Munch every dot and dodge the four ghosts through the maze.", ["new", "popular", "arcade"], "/games/pacman/index.html", "🟡", ["#facc15", "#1e40af"], { featured: true, selfHosted: true, credit: { author: "Dale Harvey", source: "https://github.com/daleharvey/pacman", license: "MIT" } }),
   g("flappy-bird", "Flappy Bird", "The infuriating classic. Flap between the pipes without crashing — how far can you get?", ["new", "popular", "arcade"], "/games/flappy-bird/index.html", "🐦", ["#38bdf8", "#22c55e"], { selfHosted: true, credit: { author: "CodeExplained", source: "https://github.com/CodeExplainedRepo/Original-Flappy-bird-JavaScript", license: "MIT" } }),
   g("memory-match", "Memory Match", "Flip cards and find every matching pair. Train your brain and beat your best time.", ["new", "puzzle", "arcade"], "/games/memory-match/index.html", "🧠", ["#ec4899", "#8b5cf6"], { selfHosted: true, credit: { author: "vishalqalandari903", source: "https://github.com/vishalqalandari903/MemoryCardGame_Javascript", license: "MIT" } }),
+  g("dino-run", "Dino Run", "The Chrome offline dino game. Jump the cacti and duck the birds — it never ends, it only gets faster.", ["new", "popular", "arcade"], "/games/dino-run/index.html", "🦖", ["#4b5563", "#1f2937"], { featured: true, selfHosted: true, credit: { author: "wayou", source: "https://github.com/wayou/t-rex-runner", license: "MIT" } }),
+  g("word-guess", "Word Guess", "Six tries to guess the secret five-letter word. Green means right spot, yellow means wrong spot. A Wordle-style brain teaser.", ["new", "popular", "puzzle"], "/games/word-guess/index.html", "🟩", ["#22c55e", "#15803d"], { featured: true, selfHosted: true, credit: { author: "WebDevSimplified", source: "https://github.com/WebDevSimplified/wordle-clone", license: "MIT" } }),
+  g("minesweeper", "Minesweeper", "The Windows classic. Clear the grid without detonating a mine — use the numbers to deduce where they hide.", ["new", "popular", "puzzle"], "/games/minesweeper/index.html", "💣", ["#64748b", "#0f172a"], { selfHosted: true, credit: { author: "muan", source: "https://github.com/muan/emoji-minesweeper", license: "MIT" } }),
   g("hextris", "Hextris", "Addictive hexagonal puzzle inspired by Tetris. Rotate the hexagon to catch falling blocks and clear layers.", ["new", "popular", "puzzle", "arcade"], "/games/hextris/index.html", "⬡", ["#10b981", "#0891b2"], { featured: true, selfHosted: true, credit: { author: "Garrett Finucane & contributors", source: "https://github.com/Hextris/hextris", license: "GPL-3.0" } }),
   g("2048", "2048", "Slide numbered tiles to combine them and reach 2048. The all-time classic number puzzle.", ["new", "popular", "puzzle"], "/games/2048/index.html", "🔢", ["#f59e0b", "#ef4444"], { featured: true, selfHosted: true, credit: { author: "Gabriele Cirulli", source: "https://github.com/gabrielecirulli/2048", license: "MIT" } }),
   g("custom-tetris", "Tetris", "Classic Tetris — stack the falling blocks, clear lines, and chase a high score.", ["new", "popular", "puzzle", "arcade"], "/games/custom-tetris/index.html", "🧱", ["#8b5cf6", "#3b82f6"], { featured: true, selfHosted: true, credit: { author: "Ondřej Žára", source: "https://github.com/ondras/custom-tetris", license: "MIT" } }),
@@ -146,6 +149,19 @@ export const CONTROLS: Record<string, ControlRow[]> = {
     { keys: ["Click"], action: "Flap (mouse)" },
   ],
   "memory-match": [{ keys: ["Mouse"], action: "Click cards to flip them" }],
+  "dino-run": [
+    { keys: ["Space", "↑"], action: "Jump" },
+    { keys: ["↓"], action: "Duck" },
+  ],
+  "word-guess": [
+    { keys: ["A–Z"], action: "Type your guess" },
+    { keys: ["Enter"], action: "Submit the word" },
+    { keys: ["Backspace"], action: "Delete a letter" },
+  ],
+  minesweeper: [
+    { keys: ["Click"], action: "Reveal a tile" },
+    { keys: ["Right-click"], action: "Flag a mine" },
+  ],
   hextris: [
     { keys: ["←", "→"], action: "Rotate the hexagon" },
     { keys: ["A", "D"], action: "Rotate (alternate)" },
