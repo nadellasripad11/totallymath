@@ -14,28 +14,29 @@
       #pacman {
         height:450px;
         width:342px;
-        margin:20px auto;
+        margin:0 auto;
       }
-      #shim { 
-        font-family: BDCartoonShoutRegular; 
+      #shim {
+        font-family: BDCartoonShoutRegular;
         position:absolute;
         visibility:hidden
       }
-      h1 { font-family: BDCartoonShoutRegular; text-align:center; }
-      body { width:342px; margin:0px auto; font-family:sans-serif; }
-      a { text-decoration:none; }
+      html, body {
+        height:100%;
+        margin:0;
+        background:#08080f;
+        font-family:sans-serif;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+      }
     </style>
 
 </head>
 
 <body>
-  
+
   <div id="shim">shim for font face</div>
-
-  <h1>HTML5 Pacman</h1>
-
-  <a href="http://arandomurl.com/">Writeup</a> |
-  Code on <a href="http://arandomurl.com/">Github</a>
 
   <div id="pacman"></div>
   <script src="pacman.js"></script>
