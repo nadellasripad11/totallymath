@@ -273,6 +273,9 @@ export default function TabCloak() {
             >
               ✕ Reset to TotallyMath
             </button>
+            <p style={{ fontSize: 11, color: "var(--text-muted)", padding: "6px 10px 2px", lineHeight: 1.4 }}>
+              ⚡ Panic key: press <kbd className="kbd">`</kbd> to instantly jump to Google Classroom.
+            </p>
           </div>
         </div>
       )}

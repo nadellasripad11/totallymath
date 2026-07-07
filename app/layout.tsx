@@ -3,6 +3,7 @@ import Link from "next/link";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import CookieBanner from "@/components/CookieBanner";
+import PanicKey from "@/components/PanicKey";
 
 export const metadata: Metadata = {
   title: "TotallyMath — Free Unblocked Games",
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
         <Navbar />
+        <PanicKey />
         <main style={{ flex: 1 }}>{children}</main>
         <footer
           style={{
@@ -44,6 +46,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </Link>
             ))}
           </div>
+          <p style={{ fontSize: 12, color: "var(--accent-light)", textAlign: "center", margin: 0 }}>
+            Tip: press the <kbd className="kbd">`</kbd> key any time to instantly bail to Google Classroom.
+          </p>
           <p style={{ fontSize: 12, color: "var(--text-muted)", textAlign: "center", margin: 0, maxWidth: 560, lineHeight: 1.5 }}>
             © {new Date().getFullYear()} TotallyMath — a free, non-commercial hobby project. Games are open-source
             or belong to their respective owners. Not affiliated with any other gaming site.
