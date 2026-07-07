@@ -29,22 +29,14 @@ export default function FeaturedSlider({ games }: { games: Game[] }) {
         alignItems: "flex-end",
       }}
     >
-      {/* background gradient based on active slot */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          background: `linear-gradient(135deg, ${game.grad[0]} 0%, ${game.grad[1]} 100%)`,
+          background: "linear-gradient(180deg, rgba(8,8,15,0.15) 0%, rgba(8,8,15,0.85) 100%)",
         }}
       />
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: `linear-gradient(180deg, rgba(8,8,15,0.15) 0%, rgba(8,8,15,0.8) 100%)`,
-        }}
-      />
-      {hasLogo ? (
+      {hasLogo && (
         <img
           src={`/thumbs/${game.slug}.png`}
           alt={game.title}
@@ -62,22 +54,6 @@ export default function FeaturedSlider({ games }: { games: Game[] }) {
             pointerEvents: "none",
           }}
         />
-      ) : (
-        <span
-          style={{
-            position: "absolute",
-            right: 40,
-            top: "50%",
-            transform: "translateY(-50%)",
-            fontSize: 120,
-            lineHeight: 1,
-            opacity: 0.9,
-            filter: "drop-shadow(0 6px 16px rgba(0,0,0,0.4))",
-            pointerEvents: "none",
-          }}
-        >
-          {game.icon}
-        </span>
       )}
       {/* animated glow orbs */}
       <div style={{
