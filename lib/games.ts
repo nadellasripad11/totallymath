@@ -88,7 +88,6 @@ export const GAMES: Game[] = [
   g("clumsy-bird", "Clumsy Bird", "The Flappy Bird clone. Tap to flap through the pipes. Instantly rage-inducing.", ["popular", "arcade"], "/games/clumsy-bird/index.html", { featured: true, selfHosted: true }),
   g("snake-classic", "Snake", "The Nokia classic. Eat, grow, and don't bite your own tail.", ["popular", "arcade"], "/games/snake-classic/index.html", { selfHosted: true }),
   g("coffee-snake", "Coffee Snake", "A slick snake remake. Munch coffee beans, grow long, avoid the walls.", ["arcade"], "/games/coffee-snake/index.html", { selfHosted: true }),
-  g("connect-four", "Connect Four", "Classic Connect 4 with an AI opponent. Line up four discs to win.", ["popular", "board", "puzzle"], "/games/connect-four/index.html", { selfHosted: true }),
   g("simon", "Simon", "The classic memory game. Watch the color pattern, then repeat it. Don't slip.", ["arcade", "puzzle"], "/games/simon/index.html", { selfHosted: true }),
   g("alien-invasion", "Alien Invasion", "Fast HTML5 shooter. Blast the alien wave before it reaches the ground.", ["shooting", "arcade"], "/games/alien-invasion/index.html", { selfHosted: true }),
   g("sorades", "SORADES 13K", "Intense scrolling shoot-'em-up in the vein of Raptor and Warning Forever.", ["shooting", "arcade"], "/games/sorades/index.html", { selfHosted: true }),
@@ -111,6 +110,7 @@ export const GAMES: Game[] = [
   g("browserquest", "BrowserQuest", "Mozilla's multiplayer mini-MMO. Explore, fight, and party up with strangers.", ["adventure"], "https://browserquest.herokuapp.com/"),
   g("polybranch", "PolyBranch", "Minimalist 3D dodger. Weave through branches at terminal velocity.", ["racing", "arcade"], "https://gregbatha.com/branches/"),
   g("0hh1", "0hh1", "Lovely little logic puzzle. Fill the grid without three-in-a-row.", ["puzzle", "board"], "https://0hh1.com/"),
+  g("connect-four", "Connect Four", "Classic Connect 4 with an AI opponent. Line up four discs to win.", ["board", "puzzle"], "https://kenrick95.github.io/c4/demo/"),
 ];
 
 export function getGame(slug: string): Game | undefined {
