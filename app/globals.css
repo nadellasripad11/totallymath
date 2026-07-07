@@ -121,6 +121,26 @@ html, body {
 .tag-new { background: #16a34a; }
 .tag-hot { background: #ef4444; }
 .tag-school { background: #7c3aed; right: 8px; left: auto; }
+
+/* keyboard key caps */
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 8px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  background: linear-gradient(180deg, #2a2a4a 0%, #1a1a35 100%);
+  border: 1px solid var(--border);
+  border-bottom-width: 3px;
+  border-radius: 7px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.4);
+  white-space: nowrap;
+}
 .game-card .info { padding: 12px 14px; }
 .game-card .info h3 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
 .game-card .info p {

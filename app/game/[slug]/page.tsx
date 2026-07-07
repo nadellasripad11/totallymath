@@ -2,7 +2,7 @@
 
 import { use, useState } from "react";
 import { notFound } from "next/navigation";
-import { getGame, GAMES } from "@/lib/games";
+import { getGame, getControls, GAMES } from "@/lib/games";
 import Link from "next/link";
 import GameCard from "@/components/GameCard";
 
@@ -14,6 +14,7 @@ export default function GamePage({ params }: { params: Promise<{ slug: string }>
   const [showFallback, setShowFallback] = useState(false);
   const [started, setStarted] = useState(false);
 
+  const controls = getControls(game.slug);
   const related = GAMES.filter(
     (g) => g.slug !== game.slug && g.categories.some((c) => game.categories.includes(c)),
   ).slice(0, 6);
@@ -113,6 +114,16 @@ export default function GamePage({ params }: { params: Promise<{ slug: string }>
                 </div>
                 <div style={{ fontSize: 20, fontWeight: 700 }}>Click to Play</div>
                 <div style={{ fontSize: 13, color: "var(--text-muted)", marginTop: 4 }}>{game.title}</div>
+                {controls.length > 0 && (
+                  <div style={{ marginTop: 14, display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "center", maxWidth: 340 }}>
+                    {controls.slice(0, 3).flatMap((row) => row.keys).slice(0, 6).map((k, i) => (
+                      <kbd key={`${k}-${i}`} className="kbd">{k}</kbd>
+                    ))}
+                    <span style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", alignSelf: "center" }}>
+                      to play
+                    </span>
+                  </div>
+                )}
               </div>
             </button>
           ) : showFallback ? (
@@ -202,6 +213,45 @@ export default function GamePage({ params }: { params: Promise<{ slug: string }>
             )}
           </div>
         </div>
+
+        {controls.length > 0 && (
+          <section style={{ marginTop: 32 }}>
+            <h2 style={{ fontSize: 18, fontWeight: 700, color: "var(--text)", marginBottom: 14, display: "flex", alignItems: "center", gap: 8 }}>
+              <span>🎮</span> Controls
+            </h2>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+                gap: 12,
+              }}
+            >
+              {controls.map((row, i) => (
+                <div
+                  key={i}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
+                    background: "var(--bg-card)",
+                    border: "1px solid var(--border)",
+                    borderRadius: 10,
+                    padding: "12px 14px",
+                  }}
+                >
+                  <span style={{ display: "flex", gap: 5, flexWrap: "wrap", flexShrink: 0 }}>
+                    {row.keys.map((k) => (
+                      <kbd key={k} className="kbd">
+                        {k}
+                      </kbd>
+                    ))}
+                  </span>
+                  <span style={{ fontSize: 13, color: "var(--text-muted)" }}>{row.action}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {related.length > 0 && (
           <section style={{ marginTop: 40 }}>

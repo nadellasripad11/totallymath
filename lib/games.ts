@@ -105,6 +105,106 @@ export const GAMES: Game[] = [
   g("connect-four", "Connect Four", "Classic Connect 4 with an AI opponent. Line up four discs to win.", ["board", "puzzle"], "https://kenrick95.github.io/c4/demo/", "🔴", ["#eab308", "#ca8a04"]),
 ];
 
+export interface ControlRow {
+  keys: string[];
+  action: string;
+}
+
+// Keyboard / mouse controls per game. "↑ ↓ ← →" are arrow keys.
+export const CONTROLS: Record<string, ControlRow[]> = {
+  hextris: [
+    { keys: ["←", "→"], action: "Rotate the hexagon" },
+    { keys: ["A", "D"], action: "Rotate (alternate)" },
+  ],
+  "2048": [
+    { keys: ["↑", "↓", "←", "→"], action: "Slide all tiles" },
+    { keys: ["W", "A", "S", "D"], action: "Slide (alternate)" },
+  ],
+  "custom-tetris": [
+    { keys: ["←", "→"], action: "Move piece" },
+    { keys: ["↑"], action: "Rotate piece" },
+    { keys: ["↓"], action: "Soft drop" },
+    { keys: ["Space"], action: "Hard drop" },
+  ],
+  astray: [
+    { keys: ["↑", "↓", "←", "→"], action: "Roll the marble" },
+    { keys: ["W", "A", "S", "D"], action: "Roll (alternate)" },
+  ],
+  "space-invaders": [
+    { keys: ["←", "→"], action: "Move your ship" },
+    { keys: ["Space"], action: "Shoot" },
+  ],
+  "clumsy-bird": [
+    { keys: ["Space"], action: "Flap wings" },
+    { keys: ["Click"], action: "Flap (mouse)" },
+  ],
+  "slime-volleyball": [
+    { keys: ["W"], action: "Player 1 — jump" },
+    { keys: ["A", "D"], action: "Player 1 — move" },
+    { keys: ["↑"], action: "Player 2 — jump" },
+    { keys: ["←", "→"], action: "Player 2 — move" },
+  ],
+  archery: [
+    { keys: ["Hold Click"], action: "Draw the bow" },
+    { keys: ["Release"], action: "Fire the arrow" },
+  ],
+  "retro-breakout": [
+    { keys: ["←", "→"], action: "Move the paddle" },
+    { keys: ["Mouse"], action: "Move paddle (alternate)" },
+  ],
+  "snake-classic": [{ keys: ["↑", "↓", "←", "→"], action: "Steer the snake" }],
+  "coffee-snake": [{ keys: ["↑", "↓", "←", "→"], action: "Steer the snake" }],
+  simon: [{ keys: ["Mouse"], action: "Click the lit colors in order" }],
+  "alien-invasion": [
+    { keys: ["←", "→"], action: "Move" },
+    { keys: ["Space"], action: "Shoot" },
+  ],
+  sorades: [
+    { keys: ["↑", "↓", "←", "→"], action: "Fly your ship" },
+    { keys: ["Space"], action: "Fire" },
+  ],
+  spashal: [
+    { keys: ["↑", "↓", "←", "→"], action: "Move" },
+    { keys: ["Space"], action: "Action" },
+  ],
+  "save-the-forest": [{ keys: ["Mouse"], action: "Click & drag to spray water" }],
+  hexgl: [
+    { keys: ["↑"], action: "Accelerate" },
+    { keys: ["←", "→"], action: "Steer" },
+    { keys: ["W", "A", "D"], action: "Alternate controls" },
+  ],
+  "a-dark-room": [{ keys: ["Mouse"], action: "Click the buttons" }],
+  asteroids: [
+    { keys: ["←", "→"], action: "Rotate ship" },
+    { keys: ["↑"], action: "Thrust" },
+    { keys: ["Space"], action: "Fire" },
+  ],
+  duckhunt: [{ keys: ["Mouse"], action: "Aim and click to shoot" }],
+  "onslaught-arena": [
+    { keys: ["W", "A", "S", "D"], action: "Move" },
+    { keys: ["Mouse"], action: "Aim and shoot" },
+    { keys: ["↑", "↓", "←", "→"], action: "Move (alternate)" },
+  ],
+  "ski-free": [
+    { keys: ["←", "→"], action: "Steer downhill" },
+    { keys: ["Mouse"], action: "Steer (alternate)" },
+  ],
+  "super-mario-clone": [
+    { keys: ["←", "→"], action: "Walk" },
+    { keys: ["↑", "Space"], action: "Jump" },
+  ],
+  lichess: [{ keys: ["Mouse"], action: "Drag pieces to move" }],
+  "cookie-clicker": [{ keys: ["Mouse"], action: "Click the cookie" }],
+  browserquest: [{ keys: ["Mouse"], action: "Click to move and fight" }],
+  polybranch: [{ keys: ["←", "→"], action: "Steer" }],
+  "0hh1": [{ keys: ["Mouse"], action: "Click cells to fill them" }],
+  "connect-four": [{ keys: ["Mouse"], action: "Click a column to drop a disc" }],
+};
+
+export function getControls(slug: string): ControlRow[] {
+  return CONTROLS[slug] ?? [];
+}
+
 export function getGame(slug: string): Game | undefined {
   return GAMES.find((game) => game.slug === slug);
 }
