@@ -1,0 +1,7 @@
+Slime Volleyball
+Original author: Clay (clay.io)
+Source: https://github.com/claydotio/Slime-Volley
+License: MIT (per project README)
+
+Bundled and self-hosted by TotallyMath with attribution.
+See /credits on the site for full attribution.

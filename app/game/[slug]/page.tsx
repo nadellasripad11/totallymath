@@ -75,18 +75,24 @@ export default function GamePage({ params }: { params: Promise<{ slug: string }>
                 color: "#fff",
               }}
             >
-              <img
-                src={game.thumbnail}
-                alt=""
+              <div
                 style={{
                   position: "absolute",
                   inset: 0,
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  filter: "brightness(0.4)",
+                  background: `linear-gradient(135deg, ${game.grad[0]} 0%, ${game.grad[1]} 100%)`,
+                  filter: "brightness(0.55)",
                 }}
               />
+              <span
+                style={{
+                  position: "absolute",
+                  fontSize: 160,
+                  opacity: 0.25,
+                  lineHeight: 1,
+                }}
+              >
+                {game.icon}
+              </span>
               <div style={{ position: "relative", zIndex: 2, textAlign: "center" }}>
                 <div
                   style={{
@@ -145,11 +151,22 @@ export default function GamePage({ params }: { params: Promise<{ slug: string }>
         </div>
 
         <div style={{ marginTop: 20, display: "flex", gap: 20, flexWrap: "wrap", alignItems: "flex-start" }}>
-          <img
-            src={game.thumbnail}
-            alt={game.title}
-            style={{ width: 120, height: 120, objectFit: "cover", borderRadius: 12, border: "1px solid var(--border)" }}
-          />
+          <div
+            style={{
+              width: 120,
+              height: 120,
+              borderRadius: 12,
+              border: "1px solid var(--border)",
+              background: `linear-gradient(135deg, ${game.grad[0]} 0%, ${game.grad[1]} 100%)`,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 60,
+              flexShrink: 0,
+            }}
+          >
+            {game.icon}
+          </div>
           <div style={{ flex: 1, minWidth: 240 }}>
             <h1 style={{ fontSize: 28, fontWeight: 800, letterSpacing: "-0.02em", color: "var(--text)" }}>
               {game.title}
@@ -174,6 +191,15 @@ export default function GamePage({ params }: { params: Promise<{ slug: string }>
               ))}
             </div>
             <p style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.6 }}>{game.description}</p>
+            {game.credit && (
+              <p style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 12, opacity: 0.8 }}>
+                Open-source game by{" "}
+                <a href={game.credit.source} target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-light)" }}>
+                  {game.credit.author}
+                </a>{" "}
+                · {game.credit.license} license
+              </p>
+            )}
           </div>
         </div>
 

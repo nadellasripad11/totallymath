@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Game } from "@/lib/games";
+import GameThumb from "./GameThumb";
 
 export default function GameCard({ game }: { game: Game }) {
   const primaryCategory = game.categories.find((c) => c !== "new" && c !== "popular") ?? game.categories[0];
@@ -7,7 +8,7 @@ export default function GameCard({ game }: { game: Game }) {
   return (
     <Link href={`/game/${game.slug}`} className="game-card">
       <div className="thumb-wrap">
-        <img src={game.thumbnail} alt={game.title} loading="lazy" />
+        <GameThumb game={game} />
         {game.categories.includes("new") && <span className="tag tag-new">NEW</span>}
         {game.categories.includes("popular") && !game.categories.includes("new") && (
           <span className="tag tag-hot">HOT</span>
