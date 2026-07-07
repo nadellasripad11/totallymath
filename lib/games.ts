@@ -73,6 +73,7 @@ export const GAMES: Game[] = [
   // ═══════════════════════════════════════════════════════════
   g("math-rush", "Math Rush", "An original TotallyMath brain-arcade game. Catch the falling answer that solves the equation — it speeds up the longer you last.", ["new", "popular", "arcade", "puzzle"], "/games/math-rush/index.html", "➕", ["#7c3aed", "#22d3ee"], { featured: true, selfHosted: true, original: true }),
   g("neon-dodge", "Neon Dodge", "An original TotallyMath reflex runner. Weave through endless neon walls that come faster and faster — every second is a point.", ["new", "popular", "arcade", "action"], "/games/neon-dodge/index.html", "⚡", ["#a855f7", "#ec4899"], { featured: true, selfHosted: true, original: true }),
+  g("retro-gridiron", "Retro Gridiron", "An original TotallyMath football game. You're the running back — juke the defenders, rack up yards, and score touchdowns before you're tackled out.", ["new", "popular", "sports", "arcade"], "/games/retro-gridiron/index.html", "🏈", ["#4ade80", "#15803d"], { featured: true, selfHosted: true, original: true }),
 
   // ═══════════════════════════════════════════════════════════
   // SELF-HOSTED — files live on OUR domain, so these bypass
@@ -131,6 +132,10 @@ export const CONTROLS: Record<string, ControlRow[]> = {
   "neon-dodge": [
     { keys: ["←", "→"], action: "Dodge left / right" },
     { keys: ["A", "D"], action: "Dodge (alternate)" },
+  ],
+  "retro-gridiron": [
+    { keys: ["←", "→"], action: "Juke left / right" },
+    { keys: ["A", "D"], action: "Juke (alternate)" },
   ],
   pacman: [
     { keys: ["↑", "↓", "←", "→"], action: "Move Pac-Man" },

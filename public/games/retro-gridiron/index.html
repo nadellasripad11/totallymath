@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Retro Gridiron — TotallyMath Original</title>
+<style>
+  :root {
+    --bg: #08080f;
+    --accent: #7c3aed;
+    --accent-light: #a855f7;
+    --text: #e2e8f0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  #wrap { position: relative; width: 100%; height: 100%; }
+  canvas { display: block; }
+  .overlay {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; gap: 14px; padding: 20px;
+    background: rgba(8,8,15,0.82); backdrop-filter: blur(4px);
+  }
+  .overlay.hidden { display: none; }
+  h1 {
+    font-size: clamp(32px, 7vw, 56px); font-weight: 900; letter-spacing: -0.03em;
+    background: linear-gradient(120deg, #4ade80, #22d3ee);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .sub { font-size: 15px; color: #94a3b8; max-width: 360px; line-height: 1.55; }
+  .keys { font-size: 13px; color: #94a3b8; margin-top: 4px; }
+  kbd {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 26px; height: 26px; padding: 0 7px; margin: 0 2px;
+    font-size: 12px; font-weight: 700; color: var(--text);
+    background: linear-gradient(180deg, #2a2a4a, #1a1a35);
+    border: 1px solid rgba(124,58,237,0.35); border-bottom-width: 3px; border-radius: 6px;
+  }
+  button {
+    margin-top: 8px; padding: 12px 28px; font-size: 16px; font-weight: 700;
+    color: #fff; background: var(--accent); border: none; border-radius: 10px;
+    cursor: pointer; transition: transform 0.1s, background 0.15s;
+  }
+  button:hover { background: var(--accent-light); }
+  button:active { transform: scale(0.96); }
+  .final { font-size: 20px; font-weight: 700; color: var(--text); }
+  .badge {
+    font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent-light); border: 1px solid rgba(124,58,237,0.4);
+    padding: 4px 12px; border-radius: 999px;
+  }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="c"></canvas>
+
+  <div id="startScreen" class="overlay">
+    <span class="badge">TotallyMath Original</span>
+    <h1>Retro Gridiron</h1>
+    <p class="sub">You're the running back. Dodge the defenders and run up the field for yards. Every 100 yards is a touchdown. Get tackled 4 times and the drive is over.</p>
+    <p class="keys"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> or <kbd>A</kbd> <kbd>D</kbd> to juke left / right</p>
+    <button id="startBtn">Start</button>
+  </div>
+
+  <div id="overScreen" class="overlay hidden">
+    <h1>Drive Over</h1>
+    <p class="final" id="finalScore">0 yards</p>
+    <p class="sub" id="bestLine">Best: 0</p>
+    <button id="retryBtn">Play Again</button>
+  </div>
+</div>
+
+<script>
+(() => {
+  const canvas = document.getElementById("c");
+  const ctx = canvas.getContext("2d");
+  const startScreen = document.getElementById("startScreen");
+  const overScreen = document.getElementById("overScreen");
+  const startBtn = document.getElementById("startBtn");
+  const retryBtn = document.getElementById("retryBtn");
+  const finalScore = document.getElementById("finalScore");
+  const bestLine = document.getElementById("bestLine");
+
+  let W = 0, H = 0, dpr = 1;
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth || 400; H = window.innerHeight || 600;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    canvas.style.width = W + "px"; canvas.style.height = H + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (state) state.player.x = clamp(state.player.x, 40, W - 40);
+  }
+
+  const BEST_KEY = "gridiron-best";
+  let best = 0;
+  try { best = parseInt(localStorage.getItem(BEST_KEY) || "0", 10) || 0; } catch (e) {}
+
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function rand(lo, hi) { return Math.random() * (hi - lo) + lo; }
+
+  const state = {
+    running: false,
+    yards: 0,
+    downs: 4,          // tackles remaining
+    touchdowns: 0,
+    speed: 260,        // field scroll px/s
+    fieldOffset: 0,
+    player: { x: 0, y: 0, w: 34, h: 40 },
+    defenders: [],
+    spawnTimer: 0,
+    keys: {},
+    flash: 0,
+    invuln: 0,         // brief immunity after a tackle
+  };
+
+  function reset() {
+    state.yards = 0;
+    state.downs = 4;
+    state.touchdowns = 0;
+    state.speed = 260;
+    state.fieldOffset = 0;
+    state.player.x = W / 2;
+    state.player.y = H - 120;
+    state.defenders = [];
+    state.spawnTimer = 0;
+    state.flash = 0;
+    state.invuln = 0;
+  }
+
+  function start() {
+    resize();
+    reset();
+    state.running = true;
+    startScreen.classList.add("hidden");
+    overScreen.classList.add("hidden");
+  }
+
+  function gameOver() {
+    state.running = false;
+    const total = Math.floor(state.yards);
+    if (total > best) {
+      best = total;
+      try { localStorage.setItem(BEST_KEY, String(best)); } catch (e) {}
+    }
+    finalScore.textContent = total + " yards · " + state.touchdowns + " TD";
+    bestLine.textContent = "Best: " + best + " yards";
+    overScreen.classList.remove("hidden");
+  }
+
+  startBtn.addEventListener("click", start);
+  retryBtn.addEventListener("click", start);
+
+  addEventListener("keydown", (e) => {
+    state.keys[e.key.toLowerCase()] = true;
+    if (["arrowleft", "arrowright", " "].includes(e.key.toLowerCase())) e.preventDefault();
+  });
+  addEventListener("keyup", (e) => { state.keys[e.key.toLowerCase()] = false; });
+
+  let pointerX = null;
+  canvas.addEventListener("mousemove", (e) => { pointerX = e.clientX; });
+  canvas.addEventListener("touchmove", (e) => { if (e.touches[0]) pointerX = e.touches[0].clientX; }, { passive: true });
+
+  function spawnDefender() {
+    const laneX = rand(50, W - 50);
+    state.defenders.push({
+      x: laneX,
+      y: -40,
+      w: 32, h: 38,
+      drift: rand(-40, 40),
+    });
+  }
+
+  function update(dt) {
+    const p = state.player;
+    const move = 380 * dt;
+    if (state.keys["arrowleft"] || state.keys["a"]) p.x -= move;
+    if (state.keys["arrowright"] || state.keys["d"]) p.x += move;
+    if (pointerX !== null) p.x += (pointerX - p.x) * Math.min(1, dt * 12);
+    p.x = clamp(p.x, p.w / 2, W - p.w / 2);
+
+    // gaining yards + speed ramp
+    const gained = (state.speed * dt) / 12; // ~1 yard per 12px scrolled
+    state.yards += gained;
+    state.speed += dt * 6;
+    state.fieldOffset = (state.fieldOffset + state.speed * dt) % 60;
+
+    // touchdown check
+    const td = Math.floor(state.yards / 100);
+    if (td > state.touchdowns) {
+      state.touchdowns = td;
+      state.flash = 1;
+    }
+
+    if (state.invuln > 0) state.invuln = Math.max(0, state.invuln - dt);
+    if (state.flash > 0) state.flash = Math.max(0, state.flash - dt * 2);
+
+    // spawn defenders, faster over time
+    state.spawnTimer -= dt;
+    if (state.spawnTimer <= 0) {
+      spawnDefender();
+      state.spawnTimer = clamp(0.85 - state.touchdowns * 0.05, 0.35, 0.85);
+    }
+
+    for (const d of state.defenders) {
+      d.y += state.speed * dt;
+      d.x += d.drift * dt;
+      d.x = clamp(d.x, 30, W - 30);
+      // collision
+      if (state.invuln <= 0 &&
+          Math.abs(d.x - p.x) < (d.w + p.w) / 2 - 6 &&
+          Math.abs(d.y - p.y) < (d.h + p.h) / 2 - 6) {
+        state.downs -= 1;
+        state.invuln = 1.2;
+        state.flash = 1;
+        d.y = H + 100; // remove
+        if (state.downs <= 0) { gameOver(); return; }
+      }
+    }
+    state.defenders = state.defenders.filter((d) => d.y < H + 60);
+  }
+
+  function drawField() {
+    // grass
+    ctx.fillStyle = "#15803d";
+    ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = "#166a34";
+    for (let y = -60 + state.fieldOffset; y < H; y += 60) {
+      ctx.fillRect(0, y, W, 30);
+    }
+    // yard lines
+    ctx.strokeStyle = "rgba(255,255,255,0.55)";
+    ctx.lineWidth = 3;
+    for (let y = -100 + (state.fieldOffset * 2) % 100; y < H; y += 100) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+    }
+    // sideline
+    ctx.strokeStyle = "rgba(255,255,255,0.8)";
+    ctx.lineWidth = 5;
+    ctx.beginPath(); ctx.moveTo(14, 0); ctx.lineTo(14, H); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(W - 14, 0); ctx.lineTo(W - 14, H); ctx.stroke();
+  }
+
+  function drawPlayerBox(x, y, w, h, body, stripe) {
+    ctx.fillStyle = body;
+    roundRect(ctx, x - w / 2, y - h / 2, w, h, 7);
+    ctx.fill();
+    ctx.fillStyle = stripe;
+    ctx.fillRect(x - w / 2, y - 5, w, 10);
+  }
+
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  function draw() {
+    if (!state.running) { return; }
+    drawField();
+
+    // defenders (red)
+    for (const d of state.defenders) drawPlayerBox(d.x, d.y, d.w, d.h, "#dc2626", "#fca5a5");
+
+    // player (purple, blinks when invulnerable)
+    const p = state.player;
+    if (!(state.invuln > 0 && (Math.floor(state.invuln * 10) % 2 === 0))) {
+      drawPlayerBox(p.x, p.y, p.w, p.h, "#7c3aed", "#e9d5ff");
+    }
+
+    // flash (touchdown / tackle)
+    if (state.flash > 0) {
+      ctx.fillStyle = "#ffffff";
+      ctx.globalAlpha = state.flash * 0.25;
+      ctx.fillRect(0, 0, W, H);
+      ctx.globalAlpha = 1;
+    }
+
+    // HUD
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#fff";
+    ctx.font = "800 22px Inter, sans-serif";
+    ctx.fillText(Math.floor(state.yards) + " yds", 24, 40);
+    ctx.font = "700 14px Inter, sans-serif";
+    ctx.fillStyle = "#bbf7d0";
+    ctx.fillText("TD " + state.touchdowns, 24, 62);
+
+    ctx.textAlign = "right";
+    ctx.font = "800 18px Inter, sans-serif";
+    ctx.fillStyle = "#fecaca";
+    ctx.fillText("DOWNS " + state.downs, W - 24, 40);
+  }
+
+  let last = performance.now();
+  function loop(now) {
+    requestAnimationFrame(loop);
+    const dt = Math.min(0.05, (now - last) / 1000);
+    last = now;
+    if (state.running) update(dt);
+    draw();
+  }
+
+  window.addEventListener("resize", resize);
+  resize();
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
