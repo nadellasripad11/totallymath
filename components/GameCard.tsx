@@ -12,6 +12,7 @@ export default function GameCard({ game }: { game: Game }) {
         {game.categories.includes("popular") && !game.categories.includes("new") && (
           <span className="tag tag-hot">HOT</span>
         )}
+        {game.selfHosted && <span className="tag tag-school">✓ SCHOOL</span>}
       </div>
       <div className="info">
         <span className="cat-badge">{primaryCategory}</span>

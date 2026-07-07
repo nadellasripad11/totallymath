@@ -78,6 +78,7 @@ html, body {
 }
 .tag-new { background: #16a34a; }
 .tag-hot { background: #ef4444; }
+.tag-school { background: #7c3aed; right: 8px; left: auto; }
 .game-card .info { padding: 12px 14px; }
 .game-card .info h3 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
 .game-card .info p {
