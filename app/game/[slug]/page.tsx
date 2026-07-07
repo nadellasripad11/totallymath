@@ -90,7 +90,7 @@ export default function GamePage({ params }: { params: Promise<{ slug: string }>
               style={{
                 position: "absolute",
                 inset: 0,
-                background: "none",
+                background: "#0d0d1a",
                 border: "none",
                 cursor: "pointer",
                 display: "flex",
@@ -101,24 +101,6 @@ export default function GamePage({ params }: { params: Promise<{ slug: string }>
                 color: "#fff",
               }}
             >
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: `linear-gradient(135deg, ${game.grad[0]} 0%, ${game.grad[1]} 100%)`,
-                  filter: "brightness(0.55)",
-                }}
-              />
-              <span
-                style={{
-                  position: "absolute",
-                  fontSize: 160,
-                  opacity: 0.25,
-                  lineHeight: 1,
-                }}
-              >
-                {game.icon}
-              </span>
               <div style={{ position: "relative", zIndex: 2, textAlign: "center" }}>
                 <div
                   style={{
@@ -165,7 +147,6 @@ export default function GamePage({ params }: { params: Promise<{ slug: string }>
                 textAlign: "center",
               }}
             >
-              <div style={{ fontSize: 48 }}>🎮</div>
               <h2 style={{ fontSize: 20, fontWeight: 700, color: "var(--text)" }}>{game.title}</h2>
               <p style={{ fontSize: 13, color: "var(--text-muted)", maxWidth: 360 }}>
                 This game can&apos;t be embedded here. Open it in a new tab to play instantly.
@@ -193,15 +174,17 @@ export default function GamePage({ params }: { params: Promise<{ slug: string }>
               height: 120,
               borderRadius: 12,
               border: "1px solid var(--border)",
-              background: `linear-gradient(135deg, ${game.grad[0]} 0%, ${game.grad[1]} 100%)`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 60,
+              background: "#0d0d1a",
+              overflow: "hidden",
               flexShrink: 0,
             }}
           >
-            {game.icon}
+            <img
+              src={`/thumbs/${game.slug}.png`}
+              alt={game.title}
+              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+            />
           </div>
           <div style={{ flex: 1, minWidth: 240 }}>
             <h1 style={{ fontSize: 28, fontWeight: 800, letterSpacing: "-0.02em", color: "var(--text)" }}>
