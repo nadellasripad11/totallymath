@@ -29,7 +29,8 @@ export default function Navbar() {
           justifyContent: "space-between",
         }}
       >
-        <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 8 }}>
+        <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 10 }}>
+          <img src="/logo.svg" alt="TotallyMath logo" width={34} height={34} style={{ display: "block" }} />
           <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: "-0.03em", color: "#fff" }}>
             totally<span style={{ color: "var(--accent-light)" }}>math</span>
           </span>

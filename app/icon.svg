@@ -1,0 +1,38 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="tmFace" x1="128" y1="112" x2="384" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5bc85f"/>
+      <stop offset="0.55" stop-color="#3aab45"/>
+      <stop offset="1" stop-color="#2f9a3e"/>
+    </linearGradient>
+    <linearGradient id="tmSheen" x1="160" y1="120" x2="256" y2="300" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- drop shadow -->
+  <ellipse cx="256" cy="446" rx="150" ry="20" fill="#000000" opacity="0.12"/>
+
+  <!-- outer body with dark green border -->
+  <rect x="104" y="96" width="304" height="304" rx="70"
+        fill="url(#tmFace)" stroke="#166b2c" stroke-width="20"/>
+
+  <!-- subtle bubbles -->
+  <g fill="#ffffff" opacity="0.14">
+    <circle cx="330" cy="168" r="12"/>
+    <circle cx="358" cy="212" r="7"/>
+    <circle cx="168" cy="322" r="14"/>
+    <circle cx="150" cy="270" r="6"/>
+    <circle cx="336" cy="330" r="9"/>
+    <circle cx="300" cy="300" r="5"/>
+  </g>
+
+  <!-- glossy sheen (top half) -->
+  <path d="M104 166 Q104 96 174 96 H338 Q408 96 408 166 V236 Q256 200 104 236 Z"
+        fill="url(#tmSheen)"/>
+
+  <!-- plus sign -->
+  <path d="M226 158 h60 a24 24 0 0 1 24 24 v44 h44 a24 24 0 0 1 24 24 v0 a24 24 0 0 1 -24 24 h-44 v44 a24 24 0 0 1 -24 24 h-60 a24 24 0 0 1 -24 -24 v-44 h-44 a24 24 0 0 1 -24 -24 v0 a24 24 0 0 1 24 -24 h44 v-44 a24 24 0 0 1 24 -24 Z"
+        fill="#ffffff" stroke="#166b2c" stroke-width="12" stroke-linejoin="round"/>
+</svg>
