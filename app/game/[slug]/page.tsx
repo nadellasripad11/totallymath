@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
+import { use, useState, useRef } from "react";
 import { notFound } from "next/navigation";
 import { getGame, getControls, GAMES } from "@/lib/games";
 import Link from "next/link";
@@ -13,6 +13,19 @@ export default function GamePage({ params }: { params: Promise<{ slug: string }>
 
   const [showFallback, setShowFallback] = useState(false);
   const [started, setStarted] = useState(false);
+  const frameRef = useRef<HTMLDivElement>(null);
+
+  function goFullscreen() {
+    setStarted(true);
+    const el = frameRef.current;
+    if (!el) return;
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      // request on next tick so the iframe is mounted before we expand
+      requestAnimationFrame(() => el.requestFullscreen?.());
+    }
+  }
 
   const controls = getControls(game.slug);
   const related = GAMES.filter(
@@ -36,12 +49,22 @@ export default function GamePage({ params }: { params: Promise<{ slug: string }>
         </Link>
         <span style={{ color: "var(--border)" }}>|</span>
         <span style={{ fontWeight: 700, fontSize: 14, color: "var(--text)" }}>{game.title}</span>
+        <button
+          onClick={goFullscreen}
+          className="btn btn-primary"
+          style={{ marginLeft: "auto", fontSize: 12, padding: "5px 12px", display: "inline-flex", alignItems: "center", gap: 6 }}
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3" />
+          </svg>
+          Fullscreen
+        </button>
         <a
           href={game.url}
           target="_blank"
           rel="noopener noreferrer"
           className="btn btn-ghost"
-          style={{ marginLeft: "auto", fontSize: 12, padding: "5px 12px" }}
+          style={{ fontSize: 12, padding: "5px 12px" }}
         >
           Open in Tab ↗
         </a>
@@ -49,6 +72,8 @@ export default function GamePage({ params }: { params: Promise<{ slug: string }>
 
       <div style={{ padding: "20px", maxWidth: 1200, margin: "0 auto" }}>
         <div
+          ref={frameRef}
+          className="game-frame"
           style={{
             position: "relative",
             width: "100%",

@@ -76,6 +76,19 @@ html, body {
   justify-content: center;
   overflow: hidden;
 }
+/* fullscreen game — fill the whole screen, game only */
+.game-frame:fullscreen {
+  aspect-ratio: auto !important;
+  width: 100vw;
+  height: 100vh;
+  border: none !important;
+  border-radius: 0 !important;
+}
+.game-frame:fullscreen iframe {
+  width: 100%;
+  height: 100%;
+}
+
 .game-thumb-img {
   position: absolute;
   inset: 0;
