@@ -50,16 +50,16 @@ export default function Navbar() {
             Games
           </Link>
           <Link
-            href="/proxy"
+            href="/credits"
             className="btn btn-ghost"
             style={{
               padding: "6px 14px",
               fontSize: 13,
-              color: path === "/proxy" ? "var(--text)" : "var(--text-muted)",
-              borderColor: path === "/proxy" ? "var(--accent)" : "var(--border)",
+              color: path === "/credits" ? "var(--text)" : "var(--text-muted)",
+              borderColor: path === "/credits" ? "var(--accent)" : "var(--border)",
             }}
           >
-            Proxy
+            Credits
           </Link>
         </div>
       </div>
