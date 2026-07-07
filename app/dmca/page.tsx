@@ -31,7 +31,7 @@ export default function DmcaPage() {
       <h2>Contact</h2>
       <p>
         Email:{" "}
-        <a href="mailto:nadellasripad11@gmail.com">nadellasripad11@gmail.com</a>
+        <a href="mailto:random29.9.2011@gmail.com">random29.9.2011@gmail.com</a>
       </p>
       <p style={{ fontSize: 13, opacity: 0.75 }}>
         (Replace this with a dedicated contact address if you prefer not to publish a personal
