@@ -110,8 +110,13 @@ export const GAMES: Game[] = [
   g("a-dark-room", "A Dark Room", "Minimalist text adventure that unfolds into something much bigger. Trust the fire.", ["adventure"], "https://adarkroom.doublespeakgames.com/", "🔥", ["#f97316", "#7c2d12"]),
   g("asteroids", "Asteroids", "The classic Atari arcade shooter, faithfully recreated in pure JavaScript.", ["arcade", "shooting"], "/games/asteroids/index.html", "☄️", ["#64748b", "#1e293b"], { selfHosted: true, credit: { author: "Doug McInnes", source: "https://github.com/dmcinnes/HTML5-Asteroids", license: "MIT" } }),
   g("duckhunt", "Duck Hunt", "The NES classic ported to JavaScript. Shoot the ducks before they escape.", ["shooting", "arcade"], "/games/duck-hunt/index.html", "🦆", ["#0ea5e9", "#0369a1"], { selfHosted: true, credit: { author: "Matt Surabian", source: "https://github.com/MattSurabian/DuckHunt-JS", license: "MIT" } }),
-  g("road-rush", "Road Rush", "3D car racing with 100+ unlockable cars, coins, and battle mode. Pick your ride and race.", ["new", "popular", "racing", "action"], "/games/road-rush/index.html", "🚗", ["#ef4444", "#dc2626"], { selfHosted: true }),
-  g("snow-rider", "Snow Rider 3D", "Ride Santa's sled down an endless snowy mountain. Dodge trees, collect gifts, survive.", ["new", "popular", "racing", "arcade"], "/games/snow-rider/index.html", "🛷", ["#38bdf8", "#0ea5e9"], { selfHosted: true }),
+  g("snow-rider", "Snow Rider 3D", "Ride Santa's sled down an endless snowy mountain. Dodge trees, collect gifts, survive.", ["new", "popular", "racing", "arcade"], "/games/snow-rider/index.html", "🛷", ["#38bdf8", "#0ea5e9"], { featured: true, selfHosted: true }),
+  g("slope", "Slope", "Roll a ball down an infinite neon slope. Don't fall off the edge — it only gets faster.", ["new", "popular", "arcade", "racing"], "/games/slope/index.html", "🔴", ["#22d3ee", "#7c3aed"], { featured: true, selfHosted: true }),
+  g("tunnel-rush", "Tunnel Rush", "Blast through a psychedelic tunnel at breakneck speed. Dodge every obstacle or die.", ["new", "popular", "arcade", "racing"], "/games/tunnel-rush/index.html", "🌀", ["#a855f7", "#ec4899"], { featured: true, selfHosted: true }),
+  g("drift-boss", "Drift Boss", "Tap to drift a car around endless corners. Simple to learn, impossible to master.", ["new", "popular", "racing"], "/games/drift-boss/index.html", "🚗", ["#f59e0b", "#ef4444"], { featured: true, selfHosted: true }),
+  g("motox3m", "Moto X3M", "Insane stunt bike racing. Wheelie, backflip, and bomb through 22 brutal obstacle courses.", ["new", "popular", "racing", "action"], "/games/motox3m/index.html", "🏍️", ["#f97316", "#dc2626"], { featured: true, selfHosted: true }),
+  g("basket-random", "Basket Random", "2-player ragdoll basketball. One button each — physics do the rest. Pure chaos.", ["new", "popular", "sports", "2-player"], "/games/basket-random/index.html", "🏀", ["#f97316", "#ea580c"], { featured: true, selfHosted: true }),
+  g("run-3", "Run 3", "Run, skate, and float through an endless tunnel in space. Fall off? Try a different path.", ["new", "popular", "platformer", "arcade"], "/games/run-3/index.html", "🏃", ["#6366f1", "#8b5cf6"], { featured: true, selfHosted: true }),
   g("onslaught-arena", "Onslaught Arena", "Fend off hordes of medieval monsters in a fast-paced arcade shooter.", ["action", "shooting"], "https://arcade.lostdecadegames.com/onslaught_arena/", "⚔️", ["#dc2626", "#450a0a"]),
   g("ski-free", "Ski Free", "The Windows classic. Dodge trees, jump ramps, and outrun the yeti.", ["arcade", "racing"], "https://basicallydan.github.io/skifree.js/", "⛷️", ["#38bdf8", "#0c4a6e"]),
   g("super-mario-clone", "Super Mario", "Level 1-1 recreated with a full jump-and-stomp engine.", ["platformer", "arcade"], "https://martindrapeau.github.io/backbone-game-engine/super-mario-bros/index.html", "🍄", ["#ef4444", "#991b1b"]),
@@ -251,13 +256,34 @@ export const CONTROLS: Record<string, ControlRow[]> = {
   polybranch: [{ keys: ["←", "→"], action: "Steer" }],
   "0hh1": [{ keys: ["Mouse"], action: "Click cells to fill them" }],
   "connect-four": [{ keys: ["Mouse"], action: "Click a column to drop a disc" }],
-  "road-rush": [
-    { keys: ["↑", "↓", "←", "→"], action: "Steer / brake" },
-    { keys: ["W", "A", "S", "D"], action: "Steer (alternate)" },
-  ],
   "snow-rider": [
     { keys: ["←", "→"], action: "Steer the sled" },
     { keys: ["A", "D"], action: "Steer (alternate)" },
+  ],
+  slope: [
+    { keys: ["←", "→"], action: "Steer the ball" },
+    { keys: ["A", "D"], action: "Steer (alternate)" },
+  ],
+  "tunnel-rush": [
+    { keys: ["←", "→"], action: "Dodge obstacles" },
+    { keys: ["A", "D"], action: "Dodge (alternate)" },
+  ],
+  "drift-boss": [
+    { keys: ["Click"], action: "Tap / click to drift right" },
+    { keys: ["Space"], action: "Drift (keyboard)" },
+  ],
+  motox3m: [
+    { keys: ["↑", "↓"], action: "Accelerate / brake" },
+    { keys: ["←", "→"], action: "Lean back / forward" },
+    { keys: ["W", "S", "A", "D"], action: "Alternate controls" },
+  ],
+  "basket-random": [
+    { keys: ["W"], action: "Player 1 — jump / shoot" },
+    { keys: ["↑"], action: "Player 2 — jump / shoot" },
+  ],
+  "run-3": [
+    { keys: ["←", "→"], action: "Move left / right" },
+    { keys: ["Space", "↑"], action: "Jump" },
   ],
 };
 
