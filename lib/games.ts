@@ -103,6 +103,11 @@ export const GAMES: Game[] = [
   g("sorades", "Sorades 13K", "Intense scrolling shoot-'em-up in the vein of Raptor and Warning Forever.", ["shooting", "arcade"], "/games/sorades/index.html", "🚀", ["#6d28d9", "#1e1b4b"], { selfHosted: true, credit: { author: "Thiemo Mättig", source: "https://github.com/maettig/starship-sorades-13k", license: "MIT" } }),
   g("spashal", "Spashal", "Space arcade action. Danger lurks around every corner — react fast to survive.", ["action", "arcade"], "/games/spashal/index.html", "🌌", ["#4338ca", "#0f172a"], { selfHosted: true, credit: { author: "MrRar", source: "https://github.com/MrRar/spashal", license: "MIT" } }),
   g("save-the-forest", "Save The Forest", "Race against the flames to put out fires and rescue the burning forest.", ["arcade", "adventure"], "/games/save-the-forest/index.html", "🌲", ["#16a34a", "#065f46"], { selfHosted: true, credit: { author: "softvar (Varun Malhotra)", source: "https://github.com/softvar/save-the-forest", license: "MIT" } }),
+  g("1v1lol", "1v1.LOL", "Build, edit, and gun down your opponent. The ultimate practice mode for battle royale builders.", ["new", "popular", "action", "shooting"], "/games/1v1lol/index.html", "🔨", ["#3b82f6", "#1d4ed8"], { featured: true, selfHosted: true }),
+  g("retro-bowl", "Retro Bowl", "Old-school pixel football. Call the plays, manage your team, and drive to the championship.", ["new", "popular", "sports"], "/games/retro-bowl/index.html", "🏈", ["#16a34a", "#166534"], { featured: true, selfHosted: true }),
+  g("bitlife", "BitLife", "Live a full life as a text-based simulation. Make choices — go to prison, become a doctor, or just vibe.", ["new", "popular", "adventure", "strategy"], "/games/bitlife/index.html", "👤", ["#8b5cf6", "#6d28d9"], { featured: true, selfHosted: true }),
+  g("soccer-random", "Soccer Random", "2-player ragdoll soccer. Same chaos as Basketball Random — but with a net.", ["new", "popular", "sports", "2-player"], "/games/soccer-random/index.html", "⚽", ["#22c55e", "#15803d"], { featured: true, selfHosted: true }),
+  g("ovo", "OvO", "Insanely fast speed-running platformer. Slide, smash, and dive through 40+ precision levels.", ["new", "popular", "platformer", "action"], "https://totallymath-games.pages.dev/ovo/index.html", "🥚", ["#f59e0b", "#d97706"], { featured: true }),
 
   // ═══════════════════════════════════════════════════════════
   // EXTERNAL — hosted elsewhere. Great off-campus, but your
@@ -355,6 +360,26 @@ export const CONTROLS: Record<string, ControlRow[]> = {
   "doodle-jump": [
     { keys: ["←", "→"], action: "Move the Doodler" },
     { keys: ["A", "D"], action: "Move (alternate)" },
+  ],
+  "1v1lol": [
+    { keys: ["W", "A", "S", "D"], action: "Move" },
+    { keys: ["Mouse"], action: "Aim and shoot" },
+    { keys: ["Z", "X", "C", "V", "G"], action: "Switch build mode (wall/floor/stair/roof/trap)" },
+    { keys: ["F"], action: "Toggle pickaxe" },
+  ],
+  "retro-bowl": [
+    { keys: ["Mouse / Touch"], action: "Swipe to pass, tap to run" },
+    { keys: ["←", "→"], action: "Move runner" },
+  ],
+  bitlife: [{ keys: ["Mouse"], action: "Click choices to live your life" }],
+  "soccer-random": [
+    { keys: ["W"], action: "P1 — jump / kick" },
+    { keys: ["↑"], action: "P2 — jump / kick" },
+  ],
+  ovo: [
+    { keys: ["A", "D", "←", "→"], action: "Move" },
+    { keys: ["W", "↑", "Space"], action: "Jump" },
+    { keys: ["S", "↓"], action: "Slide / smash" },
   ],
 };
 
