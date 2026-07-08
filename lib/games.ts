@@ -11,6 +11,8 @@ export interface Game {
   selfHosted?: boolean;
   /** true = built from scratch for TotallyMath (original code) */
   original?: boolean;
+  /** when set, game is loaded through the UV proxy — school only sees our domain */
+  proxyUrl?: string;
   /** attribution for the open-source game we self-host */
   credit?: { author: string; source: string; license: string };
 }
@@ -53,6 +55,7 @@ interface Opts {
   featured?: boolean;
   selfHosted?: boolean;
   original?: boolean;
+  proxyUrl?: string;
   credit?: { author: string; source: string; license: string };
 }
 
@@ -113,8 +116,8 @@ export const GAMES: Game[] = [
   // EXTERNAL — hosted elsewhere. Great off-campus, but your
   // school filter may block these (they load another domain).
   // ═══════════════════════════════════════════════════════════
-  g("hexgl", "HexGL", "Blazing-fast futuristic WebGL racer. F-Zero vibes right in the browser.", ["racing"], "https://hexgl.bkcore.com/play/", "🏎️", ["#06b6d4", "#3b82f6"]),
-  g("a-dark-room", "A Dark Room", "Minimalist text adventure that unfolds into something much bigger. Trust the fire.", ["adventure"], "https://adarkroom.doublespeakgames.com/", "🔥", ["#f97316", "#7c2d12"]),
+  g("hexgl", "HexGL", "Blazing-fast futuristic WebGL racer. F-Zero vibes right in the browser.", ["racing"], "https://hexgl.bkcore.com/play/", "🏎️", ["#06b6d4", "#3b82f6"], { proxyUrl: "https://hexgl.bkcore.com/play/" }),
+  g("a-dark-room", "A Dark Room", "Minimalist text adventure that unfolds into something much bigger. Trust the fire.", ["adventure"], "https://adarkroom.doublespeakgames.com/", "🔥", ["#f97316", "#7c2d12"], { proxyUrl: "https://adarkroom.doublespeakgames.com/" }),
   g("asteroids", "Asteroids", "The classic Atari arcade shooter, faithfully recreated in pure JavaScript.", ["arcade", "shooting"], "/games/asteroids/index.html", "☄️", ["#64748b", "#1e293b"], { selfHosted: true, credit: { author: "Doug McInnes", source: "https://github.com/dmcinnes/HTML5-Asteroids", license: "MIT" } }),
   g("duckhunt", "Duck Hunt", "The NES classic ported to JavaScript. Shoot the ducks before they escape.", ["shooting", "arcade"], "/games/duck-hunt/index.html", "🦆", ["#0ea5e9", "#0369a1"], { selfHosted: true, credit: { author: "Matt Surabian", source: "https://github.com/MattSurabian/DuckHunt-JS", license: "MIT" } }),
   g("snow-rider", "Snow Rider 3D", "Ride Santa's sled down an endless snowy mountain. Dodge trees, collect gifts, survive.", ["new", "popular", "racing", "arcade"], "/games/snow-rider/index.html", "🛷", ["#38bdf8", "#0ea5e9"], { featured: true, selfHosted: true }),
@@ -124,6 +127,7 @@ export const GAMES: Game[] = [
   g("motox3m", "Moto X3M", "Insane stunt bike racing. Wheelie, backflip, and bomb through 22 brutal obstacle courses.", ["new", "popular", "racing", "action"], "/games/motox3m/index.html", "🏍️", ["#f97316", "#dc2626"], { featured: true, selfHosted: true }),
   g("basket-random", "Basket Random", "2-player ragdoll basketball. One button each — physics do the rest. Pure chaos.", ["new", "popular", "sports", "2-player"], "/games/basket-random/index.html", "🏀", ["#f97316", "#ea580c"], { featured: true, selfHosted: true }),
   g("run-3", "Run 3", "Run, skate, and float through an endless tunnel in space. Fall off? Try a different path.", ["new", "popular", "platformer", "arcade"], "/games/run-3/index.html", "🏃", ["#6366f1", "#8b5cf6"], { featured: true, selfHosted: true }),
+  g("subway-surfers", "Subway Surfers", "Run, dodge, and jump through the subway. The endless runner that never gets old.", ["new", "popular", "arcade", "action"], "https://poki.com/en/g/subway-surfers", "🏃", ["#f59e0b", "#ea580c"], { featured: true, proxyUrl: "https://poki.com/en/g/subway-surfers" }),
   g("yohoho", "Survival Race", "Fight to be the last pirate standing in a shrinking hexagonal arena. Battle royale chaos — eliminate rivals before the ring closes in.", ["new", "popular", "action", "arcade"], "/games/yohoho/index.html", "🏴‍☠️", ["#f59e0b", "#b45309"], { featured: true, selfHosted: true }),
   g("vex5", "Vex 5", "Brutal stick-figure platformer. Navigate deadly spike traps, lasers, and saw blades through 10 grueling acts.", ["new", "popular", "platformer", "action"], "/games/vex5/index.html", "🏃", ["#ef4444", "#7f1d1d"], { featured: true, selfHosted: true }),
   g("getaway-shootout", "Getaway Shootout", "Race to the helicopter, gun down rivals, and be the last one to escape. 2-player chaos.", ["new", "popular", "action", "shooting"], "/games/getaway-shootout/index.html", "🔫", ["#22c55e", "#14532d"], { featured: true, selfHosted: true }),
@@ -138,15 +142,15 @@ export const GAMES: Game[] = [
   g("google-snake", "Google Snake", "The classic Google Snake. Eat apples to grow longer — but don't bite yourself.", ["new", "popular", "arcade"], "/games/google-snake/index.html", "🐍", ["#4ade80", "#15803d"], { featured: true, selfHosted: true }),
   g("chess", "Chess", "Classic chess with an AI opponent at any level — from beginner to brutal.", ["new", "popular", "board", "strategy"], "/games/chess/index.html", "♟️", ["#475569", "#1e293b"], { featured: true, selfHosted: true }),
   g("doodle-jump", "Doodle Jump", "Jump the Doodler higher and higher through infinite platforms. Don't fall!", ["new", "popular", "arcade", "platformer"], "/games/doodle-jump/index.html", "📱", ["#84cc16", "#3f6212"], { featured: true, selfHosted: true }),
-  g("onslaught-arena", "Onslaught Arena", "Fend off hordes of medieval monsters in a fast-paced arcade shooter.", ["action", "shooting"], "https://arcade.lostdecadegames.com/onslaught_arena/", "⚔️", ["#dc2626", "#450a0a"]),
-  g("ski-free", "Ski Free", "The Windows classic. Dodge trees, jump ramps, and outrun the yeti.", ["arcade", "racing"], "https://basicallydan.github.io/skifree.js/", "⛷️", ["#38bdf8", "#0c4a6e"]),
-  g("super-mario-clone", "Super Mario", "Level 1-1 recreated with a full jump-and-stomp engine.", ["platformer", "arcade"], "https://martindrapeau.github.io/backbone-game-engine/super-mario-bros/index.html", "🍄", ["#ef4444", "#991b1b"]),
-  g("lichess", "Lichess", "The world's best free chess site. Play the AI or a real human right now.", ["board", "strategy"], "https://lichess.org/", "♟️", ["#334155", "#0f172a"]),
-  g("cookie-clicker", "Cookie Clicker", "The clicker that started it all. Bake cookies, ascend, and rebalance reality.", ["clicker"], "https://orteil.dashnet.org/cookieclicker/", "🍪", ["#b45309", "#78350f"]),
-  g("browserquest", "BrowserQuest", "Mozilla's multiplayer mini-MMO. Explore, fight, and party up with strangers.", ["adventure"], "https://browserquest.herokuapp.com/", "🗺️", ["#0d9488", "#134e4a"]),
-  g("polybranch", "PolyBranch", "Minimalist 3D dodger. Weave through branches at terminal velocity.", ["racing", "arcade"], "https://gregbatha.com/branches/", "🌿", ["#22c55e", "#14532d"]),
-  g("0hh1", "0hh1", "Lovely little logic puzzle. Fill the grid without three of a color in a row.", ["puzzle", "board"], "https://0hh1.com/", "🟥", ["#3b82f6", "#1e40af"]),
-  g("connect-four", "Connect Four", "Classic Connect 4 with an AI opponent. Line up four discs to win.", ["board", "puzzle"], "https://kenrick95.github.io/c4/demo/", "🔴", ["#eab308", "#ca8a04"]),
+  g("onslaught-arena", "Onslaught Arena", "Fend off hordes of medieval monsters in a fast-paced arcade shooter.", ["action", "shooting"], "https://arcade.lostdecadegames.com/onslaught_arena/", "⚔️", ["#dc2626", "#450a0a"], { proxyUrl: "https://arcade.lostdecadegames.com/onslaught_arena/" }),
+  g("ski-free", "Ski Free", "The Windows classic. Dodge trees, jump ramps, and outrun the yeti.", ["arcade", "racing"], "https://basicallydan.github.io/skifree.js/", "⛷️", ["#38bdf8", "#0c4a6e"], { proxyUrl: "https://basicallydan.github.io/skifree.js/" }),
+  g("super-mario-clone", "Super Mario", "Level 1-1 recreated with a full jump-and-stomp engine.", ["platformer", "arcade"], "https://martindrapeau.github.io/backbone-game-engine/super-mario-bros/index.html", "🍄", ["#ef4444", "#991b1b"], { proxyUrl: "https://martindrapeau.github.io/backbone-game-engine/super-mario-bros/index.html" }),
+  g("lichess", "Lichess", "The world's best free chess site. Play the AI or a real human right now.", ["board", "strategy"], "https://lichess.org/", "♟️", ["#334155", "#0f172a"], { proxyUrl: "https://lichess.org/" }),
+  g("cookie-clicker", "Cookie Clicker", "The clicker that started it all. Bake cookies, ascend, and rebalance reality.", ["clicker"], "https://orteil.dashnet.org/cookieclicker/", "🍪", ["#b45309", "#78350f"], { proxyUrl: "https://orteil.dashnet.org/cookieclicker/" }),
+  g("browserquest", "BrowserQuest", "Mozilla's multiplayer mini-MMO. Explore, fight, and party up with strangers.", ["adventure"], "https://browserquest.herokuapp.com/", "🗺️", ["#0d9488", "#134e4a"], { proxyUrl: "https://browserquest.herokuapp.com/" }),
+  g("polybranch", "PolyBranch", "Minimalist 3D dodger. Weave through branches at terminal velocity.", ["racing", "arcade"], "https://gregbatha.com/branches/", "🌿", ["#22c55e", "#14532d"], { proxyUrl: "https://gregbatha.com/branches/" }),
+  g("0hh1", "0hh1", "Lovely little logic puzzle. Fill the grid without three of a color in a row.", ["puzzle", "board"], "https://0hh1.com/", "🟥", ["#3b82f6", "#1e40af"], { proxyUrl: "https://0hh1.com/" }),
+  g("connect-four", "Connect Four", "Classic Connect 4 with an AI opponent. Line up four discs to win.", ["board", "puzzle"], "https://kenrick95.github.io/c4/demo/", "🔴", ["#eab308", "#ca8a04"], { proxyUrl: "https://kenrick95.github.io/c4/demo/" }),
 ];
 
 export interface ControlRow {

@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { getGame, getControls, GAMES } from "@/lib/games";
 import Link from "next/link";
 import GameCard from "@/components/GameCard";
+import ProxyFrame from "@/components/ProxyFrame";
 
 export default function GamePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
@@ -133,6 +134,8 @@ export default function GamePage({ params }: { params: Promise<{ slug: string }>
                 )}
               </div>
             </button>
+          ) : game.proxyUrl ? (
+            <ProxyFrame gameUrl={game.proxyUrl} title={game.title} />
           ) : showFallback ? (
             <div
               style={{
