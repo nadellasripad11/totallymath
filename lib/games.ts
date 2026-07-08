@@ -28,7 +28,8 @@ export type Category =
   | "adventure"
   | "strategy"
   | "board"
-  | "platformer";
+  | "platformer"
+  | "2-player";
 
 export const CATEGORIES: { id: Category | "all"; label: string }[] = [
   { id: "all", label: "All Games" },
@@ -45,6 +46,7 @@ export const CATEGORIES: { id: Category | "all"; label: string }[] = [
   { id: "strategy", label: "Strategy" },
   { id: "board", label: "Board" },
   { id: "clicker", label: "Clicker" },
+  { id: "2-player", label: "2-Player" },
 ];
 
 interface Opts {
@@ -117,6 +119,20 @@ export const GAMES: Game[] = [
   g("motox3m", "Moto X3M", "Insane stunt bike racing. Wheelie, backflip, and bomb through 22 brutal obstacle courses.", ["new", "popular", "racing", "action"], "/games/motox3m/index.html", "🏍️", ["#f97316", "#dc2626"], { featured: true, selfHosted: true }),
   g("basket-random", "Basket Random", "2-player ragdoll basketball. One button each — physics do the rest. Pure chaos.", ["new", "popular", "sports", "2-player"], "/games/basket-random/index.html", "🏀", ["#f97316", "#ea580c"], { featured: true, selfHosted: true }),
   g("run-3", "Run 3", "Run, skate, and float through an endless tunnel in space. Fall off? Try a different path.", ["new", "popular", "platformer", "arcade"], "/games/run-3/index.html", "🏃", ["#6366f1", "#8b5cf6"], { featured: true, selfHosted: true }),
+  g("yohoho", "Survival Race", "Fight to be the last pirate standing in a shrinking hexagonal arena. Battle royale chaos — eliminate rivals before the ring closes in.", ["new", "popular", "action", "arcade"], "/games/yohoho/index.html", "🏴‍☠️", ["#f59e0b", "#b45309"], { featured: true, selfHosted: true }),
+  g("vex5", "Vex 5", "Brutal stick-figure platformer. Navigate deadly spike traps, lasers, and saw blades through 10 grueling acts.", ["new", "popular", "platformer", "action"], "/games/vex5/index.html", "🏃", ["#ef4444", "#7f1d1d"], { featured: true, selfHosted: true }),
+  g("getaway-shootout", "Getaway Shootout", "Race to the helicopter, gun down rivals, and be the last one to escape. 2-player chaos.", ["new", "popular", "action", "shooting"], "/games/getaway-shootout/index.html", "🔫", ["#22c55e", "#14532d"], { featured: true, selfHosted: true }),
+  g("rooftop-snipers", "Rooftop Snipers", "2-player rooftop dueling. One shot knocks your opponent off the edge. First to 5 wins.", ["new", "popular", "shooting", "action"], "/games/rooftop-snipers/index.html", "🎯", ["#64748b", "#1e293b"], { featured: true, selfHosted: true }),
+  g("boxing-random", "Boxing Random", "2-player ragdoll boxing on one keyboard. One punch sends someone flying.", ["new", "popular", "sports", "action"], "/games/boxing-random/index.html", "🥊", ["#ef4444", "#dc2626"], { featured: true, selfHosted: true }),
+  g("volley-random", "Volley Random", "2-player random volleyball with wild physics. One button each — keep it from hitting the ground.", ["new", "popular", "sports"], "/games/volley-random/index.html", "🏐", ["#3b82f6", "#1d4ed8"], { featured: true, selfHosted: true }),
+  g("cluster-rush", "Cluster Rush", "Leap from truck to truck at highway speed. Miss one and you're roadkill.", ["new", "popular", "action", "arcade"], "/games/cluster-rush/index.html", "🚛", ["#f97316", "#c2410c"], { featured: true, selfHosted: true }),
+  g("stickman-hook", "Stickman Hook", "Swing through 100+ levels with a grappling hook. Perfect your arc, land the next swing.", ["new", "popular", "arcade", "platformer"], "/games/stickman-hook/index.html", "🪝", ["#6366f1", "#4338ca"], { featured: true, selfHosted: true }),
+  g("minecraft-classic", "Minecraft Classic", "The original 2009 browser Minecraft. Place and destroy blocks, build whatever you want.", ["new", "popular", "adventure"], "/games/minecraft-classic/index.html", "⛏️", ["#65a30d", "#3f6212"], { featured: true, selfHosted: true }),
+  g("idle-breakout", "Idle Breakout", "Idle clicker meets brick breaker. Upgrade your balls, prestige, and watch the bricks crumble forever.", ["new", "popular", "clicker", "arcade"], "/games/idle-breakout/index.html", "🟦", ["#0ea5e9", "#0369a1"], { featured: true, selfHosted: true }),
+  g("drift-hunters", "Drift Hunters", "High-speed drifting sim. Tune your car, master the handbrake, and rack up drift points.", ["new", "popular", "racing"], "/games/drift-hunters/index.html", "🚙", ["#f59e0b", "#b45309"], { featured: true, selfHosted: true }),
+  g("google-snake", "Google Snake", "The classic Google Snake. Eat apples to grow longer — but don't bite yourself.", ["new", "popular", "arcade"], "/games/google-snake/index.html", "🐍", ["#4ade80", "#15803d"], { featured: true, selfHosted: true }),
+  g("chess", "Chess", "Classic chess with an AI opponent at any level — from beginner to brutal.", ["new", "popular", "board", "strategy"], "/games/chess/index.html", "♟️", ["#475569", "#1e293b"], { featured: true, selfHosted: true }),
+  g("doodle-jump", "Doodle Jump", "Jump the Doodler higher and higher through infinite platforms. Don't fall!", ["new", "popular", "arcade", "platformer"], "/games/doodle-jump/index.html", "📱", ["#84cc16", "#3f6212"], { featured: true, selfHosted: true }),
   g("onslaught-arena", "Onslaught Arena", "Fend off hordes of medieval monsters in a fast-paced arcade shooter.", ["action", "shooting"], "https://arcade.lostdecadegames.com/onslaught_arena/", "⚔️", ["#dc2626", "#450a0a"]),
   g("ski-free", "Ski Free", "The Windows classic. Dodge trees, jump ramps, and outrun the yeti.", ["arcade", "racing"], "https://basicallydan.github.io/skifree.js/", "⛷️", ["#38bdf8", "#0c4a6e"]),
   g("super-mario-clone", "Super Mario", "Level 1-1 recreated with a full jump-and-stomp engine.", ["platformer", "arcade"], "https://martindrapeau.github.io/backbone-game-engine/super-mario-bros/index.html", "🍄", ["#ef4444", "#991b1b"]),
@@ -284,6 +300,61 @@ export const CONTROLS: Record<string, ControlRow[]> = {
   "run-3": [
     { keys: ["←", "→"], action: "Move left / right" },
     { keys: ["Space", "↑"], action: "Jump" },
+  ],
+  yohoho: [
+    { keys: ["A", "D"], action: "Move left / right" },
+    { keys: ["W"], action: "Jump / attack" },
+  ],
+  vex5: [
+    { keys: ["W", "A", "D"], action: "Move and jump" },
+    { keys: ["S"], action: "Crouch / slide" },
+  ],
+  "getaway-shootout": [
+    { keys: ["W", "E"], action: "P1 — hop / shoot" },
+    { keys: ["↑", "↓"], action: "P2 — hop / shoot" },
+  ],
+  "rooftop-snipers": [
+    { keys: ["W", "E"], action: "P1 — jump / fire" },
+    { keys: ["↑", "↓"], action: "P2 — jump / fire" },
+  ],
+  "boxing-random": [
+    { keys: ["W"], action: "P1 — punch / jump" },
+    { keys: ["↑"], action: "P2 — punch / jump" },
+  ],
+  "volley-random": [
+    { keys: ["W"], action: "P1 — jump" },
+    { keys: ["↑"], action: "P2 — jump" },
+  ],
+  "cluster-rush": [
+    { keys: ["Space", "Click"], action: "Jump between trucks" },
+  ],
+  "stickman-hook": [
+    { keys: ["Click", "Space"], action: "Grab / release hook" },
+  ],
+  "minecraft-classic": [
+    { keys: ["W", "A", "S", "D"], action: "Move" },
+    { keys: ["Space"], action: "Jump" },
+    { keys: ["Mouse"], action: "Look, place, and break blocks" },
+    { keys: ["1–9"], action: "Select block type" },
+  ],
+  "idle-breakout": [
+    { keys: ["Mouse"], action: "Click bricks and buy upgrades" },
+  ],
+  "drift-hunters": [
+    { keys: ["↑", "↓"], action: "Accelerate / brake" },
+    { keys: ["←", "→"], action: "Steer" },
+    { keys: ["Space"], action: "Handbrake (drift)" },
+  ],
+  "google-snake": [
+    { keys: ["↑", "↓", "←", "→"], action: "Steer the snake" },
+    { keys: ["W", "A", "S", "D"], action: "Steer (alternate)" },
+  ],
+  chess: [
+    { keys: ["Mouse"], action: "Click a piece, then click to move" },
+  ],
+  "doodle-jump": [
+    { keys: ["←", "→"], action: "Move the Doodler" },
+    { keys: ["A", "D"], action: "Move (alternate)" },
   ],
 };
 
